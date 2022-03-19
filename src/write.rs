@@ -956,6 +956,12 @@ impl<W: Write + io::Seek> GenericZipWriter<W> {
                     )
                     .unwrap(),
                 ),
+                #[cfg(feature = "lzma")]
+                CompressionMethod::Lzma => {
+                    return Err(ZipError::UnsupportedArchive(
+                        "LZMA compression is not supported",
+                    ))
+                }
                 CompressionMethod::Unsupported(..) => {
                     return Err(ZipError::UnsupportedArchive("Unsupported compression"))
                 }
